@@ -1,27 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LogField, LogMethod } from './decorator';
-
+import { ClassLogger, LogField, Required } from './decorator';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'webworker';
 
-  @LogMethod()
+  // @LogMethod()
   logger(): string {
     return 'Hello decorator!';
   }
 
-  @LogField()
-  private readonly myName = 'Alien';
+  @LogField() myName = 'Alien';
 
-  ngOnInit(): void {
-    this.logger();
-    this.myName;
+  @Required myRequiredField = undefined;
+
+  constructor() {
+    this.myRequiredField = undefined;
   }
 }
 
@@ -31,4 +30,9 @@ if (typeof Worker !== 'undefined') {
     console.log(data);
   };
   worker.postMessage(100000000000);
+}
+
+@ClassLogger()
+class MyClass {
+  private myName = 'Alien';
 }
